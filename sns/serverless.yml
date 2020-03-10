@@ -1,0 +1,57 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: lambda-destinations-sns
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-2
+
+plugins:
+  - serverless-pseudo-parameters
+functions:
+  hello:
+    handler: handler.hello
+    reservedConcurrency: 5
+    events:
+      - sqs:
+          arn: !GetAtt incomingqueue.Arn
+    destinations:
+      onFailure: arn:aws:sqs:#{AWS::Region}:#{AWS::AccountId}:failurequeue
+
+
+
+resources:
+  Resources:
+    failurequeue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: failurequeue
+
+    successqueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: successqueue
+
+    incomingqueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: incomingqueue

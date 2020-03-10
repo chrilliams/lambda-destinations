@@ -1,0 +1,14 @@
+{
+  "name": "lambda-destinations",
+  "version": "1.0.0",
+  "description": "example project show lambda functions",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Williams",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-pseudo-parameters": "^2.5.0"
+  }
+}
